@@ -57,5 +57,5 @@ class CredentialsNonChecker(object):
     def requestAvatarId(self, credentials):
         """automatically validate *any* user"""
         if self.auth_callback is not None:
-            self.auth_callback(credentials.username,credentials.password)
+            return self.auth_callback(credentials.username,credentials.password)
         return credentials.username
