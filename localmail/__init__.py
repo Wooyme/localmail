@@ -44,7 +44,6 @@ class PortReporterTCPServer(service.Service, object):
 def get_portal(custom_auth):
     localmail_portal = portal.Portal(TestServerRealm())
     localmail_portal.registerChecker(CredentialsNonChecker(custom_auth))
-    localmail_portal.registerChecker(checkers.AllowAnonymousAccess())
     return localmail_portal
 
 
