@@ -65,7 +65,7 @@ class IMAPServerProtocol(imap4.IMAP4Server):
     def sendLine(self, line):
         imap4.IMAP4Server.sendLine(self, line)
 
-    def do_ID(self, tag, args):
+    def unauth_ID(self, tag, args):
         args = args.upper().strip()
         print(args)
         self.sendLine(self, '* ID ("NAME" "Zimbra" "VERSION" "8.8.12_GA_3803" "RELEASE" "20190410012803")')
