@@ -16,6 +16,7 @@
 from twisted.internet import protocol
 from twisted.mail import imap4
 from twisted.mail._cred import LOGINCredentials, PLAINCredentials
+from twisted.python.compat import nativeString
 from zope.interface import implementer
 
 from .inbox import INBOX
@@ -69,6 +70,10 @@ class IMAPServerProtocol(imap4.IMAP4Server):
         print(args)
         self.sendLine(self, '* ID ("NAME" "Zimbra" "VERSION" "8.8.12_GA_3803" "RELEASE" "20190410012803")')
         self.sendLine(self, ' OK ID completed')
+
+    def lookupCommand(self, cmd):
+        print("_".join((self.state, nativeString(cmd.upper()))))
+        return getattr(self, "_".join((self.state, nativeString(cmd.upper()))), None)
 
 
 class TestServerIMAPFactory(protocol.Factory):
