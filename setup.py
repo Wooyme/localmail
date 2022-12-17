@@ -72,13 +72,3 @@ if __name__ == '__main__':
         tests_require=test_requirements,
         test_suite=test_suite,
     )
-
-    # Make Twisted regenerate the dropin.cache, if possible.  This is necessary
-    # because in a site-wide install, dropin.cache cannot be rewritten by
-    # normal users.
-    try:
-        from twisted.plugin import IPlugin, getPlugins
-    except Exception:
-        pass
-    else:
-        list(getPlugins(IPlugin))
