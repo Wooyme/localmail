@@ -15,6 +15,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 from twisted.internet import protocol
 from twisted.mail import imap4
+from twisted.mail._cred import LOGINCredentials, PLAINCredentials
 from zope.interface import implementer
 
 from .inbox import INBOX
@@ -68,10 +69,15 @@ class TestServerIMAPFactory(protocol.Factory):
     protocol = IMAPServerProtocol
     portal = None  # placeholder
     noisy = False
+    challengers = {
+        b"LOGIN": LOGINCredentials,
+        b"PLAIN": PLAINCredentials
+    }
 
     def buildProtocol(self, address):
         p = self.protocol()
         # self.portal will be set up already "magically"
         p.portal = self.portal
         p.factory = self
+        p.challengers = self.challengers
         return p
