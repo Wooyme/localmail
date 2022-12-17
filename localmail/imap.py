@@ -67,7 +67,7 @@ class IMAPServerProtocol(imap4.IMAP4Server):
 
     def do_ID(self, tag, id):
         self.sendLine(b'* ID ("NAME" "Zimbra" "VERSION" "8.8.12_GA_3803" "RELEASE" "20190410012803")')
-        self.sendLine(b'tag OK ID completed')
+        self.sendLine(tag + b' OK ID completed')
 
     def arg_line(self, line):
         """
