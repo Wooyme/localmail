@@ -73,22 +73,23 @@ def run(smtp_port=2025,
         mbox_path=None,
         callback=None,
         auth=None,
+        ssl_path=None
         ):
     from twisted.internet import reactor
     if mbox_path is not None:
         from localmail.inbox import INBOX
         INBOX.setFile(mbox_path)
     sslContext = ssl.DefaultOpenSSLContextFactory(
-        '/home/wooyme/.ssl/privkey.pem',
-        '/home/wooyme/.ssl/cacert.pem'
+        ssl_path[0],
+        ssl_path[1]
     )
     smtpFactory, imapFactory, httpFactory = get_factories(auth)
     smtp = reactor.listenTCP(smtp_port, smtpFactory)
-    smtp_ssl = reactor.listenSSL(smtp_port + 1, smtpFactory, contextFactory = sslContext)
+    smtp_ssl = reactor.listenSSL(smtp_port + 1, smtpFactory, contextFactory=sslContext)
     imap = reactor.listenTCP(imap_port, imapFactory)
-    imap_ssl = reactor.listenSSL(imap_port + 1, imapFactory, contextFactory = sslContext)
+    imap_ssl = reactor.listenSSL(imap_port + 1, imapFactory, contextFactory=sslContext)
     http = reactor.listenTCP(http_port, httpFactory)
-    http_ssl = reactor.listenSSL(http_port + 1, httpFactory, contextFactory = sslContext)
+    http_ssl = reactor.listenSSL(http_port + 1, httpFactory, contextFactory=sslContext)
     if callback is not None:
         callback(smtp.getHost().port, imap.getHost().port, http.getHost().port,
                  smtp_ssl.getHost().port, imap_ssl.getHost().port, http_ssl.getHost().port)
