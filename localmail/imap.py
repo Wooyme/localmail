@@ -60,9 +60,11 @@ class IMAPServerProtocol(imap4.IMAP4Server):
     "Subclass of imap4.IMAP4Server that adds debugging."
 
     def lineReceived(self, line):
+        print("Receive: {0}".format(line))
         imap4.IMAP4Server.lineReceived(self, line)
 
     def sendLine(self, line):
+        print("Send: {0}".format(line))
         imap4.IMAP4Server.sendLine(self, line)
 
     def do_ID(self, tag, id):
