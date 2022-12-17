@@ -70,6 +70,9 @@ def get_services(smtp_port, imap_port, http_port, callback=None):
 def run(smtp_port=2025,
         imap_port=2143,
         http_port=8880,
+        smtp_ssl_port=2026,
+        imap_ssl_port=2144,
+        http_ssl_port=8881,
         mbox_path=None,
         callback=None,
         auth=None,
@@ -85,11 +88,11 @@ def run(smtp_port=2025,
     )
     smtpFactory, imapFactory, httpFactory = get_factories(auth)
     smtp = reactor.listenTCP(smtp_port, smtpFactory)
-    smtp_ssl = reactor.listenSSL(smtp_port + 1, smtpFactory, contextFactory=sslContext)
+    smtp_ssl = reactor.listenSSL(smtp_ssl_port, smtpFactory, contextFactory=sslContext)
     imap = reactor.listenTCP(imap_port, imapFactory)
-    imap_ssl = reactor.listenSSL(imap_port + 1, imapFactory, contextFactory=sslContext)
+    imap_ssl = reactor.listenSSL(imap_ssl_port, imapFactory, contextFactory=sslContext)
     http = reactor.listenTCP(http_port, httpFactory)
-    http_ssl = reactor.listenSSL(http_port + 1, httpFactory, contextFactory=sslContext)
+    http_ssl = reactor.listenSSL(http_ssl_port, httpFactory, contextFactory=sslContext)
     if callback is not None:
         callback(smtp.getHost().port, imap.getHost().port, http.getHost().port,
                  smtp_ssl.getHost().port, imap_ssl.getHost().port, http_ssl.getHost().port)
